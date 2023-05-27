@@ -24,29 +24,39 @@ app.post("/" ,function(req ,res){
             FNAME: firstName,
             LNAME: lastName
         }
-    }
-]
+     }
+    ]
   };
 
-  const jsondata = json.stringify(data);
+  const jsondata = JSON.stringify(data);
   const url ="https://us21.api.mailchimp.com/3.0/lists/dba3c15b38"
   const Option ={
     method: "POST",
-    auth : "kadory:17b8248cbbae1c7019a60bbf50ff4df2-us21"
-  }
-https.request(url , Option ,function(response){
+    auth : "kadory1:26d1f5f9ee21af9e9ab821d8b87e8473-us21"
+  };
+const request= https.request(url , Option ,function(response){
+    if (response.statusCode ==200){
+        res.sendFile(__dirname +"/success.html");
+    }else{
+        res.sendFile(__dirname+"/failure.html");
+    }
 response.on("data", function(data){
 console.log(JSON.parse(data));
  })
 })
-  
+  request.write(jsondata);
+  request.end();
 });
-app.listen(3000 , () => {
+app.post("/failure", function(req, res){
+    res.redirect("/")
+});
+app.post("/success", function(req, res){
+    res.redirect("/")
+});
+app.listen(process.env.PORT || 3000 , () => {
     console.log("yay");
     });
-    //api key
-    //17b8248cbbae1c7019a60bbf50ff4df2-us21
+   
 
 
-    //dba3c15b38.
-    //list id
+    
